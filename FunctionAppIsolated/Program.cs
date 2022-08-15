@@ -1,12 +1,16 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
+var secretConfiguration = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
+
+var connectionString = secretConfiguration["AppConfig:ServiceApiKey"];
+
 var host = new HostBuilder()
        .ConfigureAppConfiguration(builder =>
        {
            builder.AddAzureAppConfiguration(options =>
            {
-               options.Connect(Environment.GetEnvironmentVariable("AppConfiguration"))
+               options.Connect(connectionString)
                        // Load all keys that start with `TestApp:` and have no label
                        .Select("TestApp:*")
                        // Configure to reload configuration if the registered sentinel key is modified
