@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 //Retrieve the Connection String from the secrets manager 
-var connectionString = builder.Configuration.GetConnectionString("appConfiguration");
+var connectionString = builder.Configuration["AppConfig:ServiceApiKey"];
 
 builder.Host.ConfigureAppConfiguration(builder =>
 {
