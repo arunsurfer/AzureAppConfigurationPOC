@@ -9,10 +9,13 @@ namespace FunctionAppInProcess
     {
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
+            var secretConfiguration = new ConfigurationBuilder().AddUserSecrets<Startup>().Build();
+
+            var connectionString = secretConfiguration["AppConfig:ServiceApiKey"];
 
             builder.ConfigurationBuilder.AddAzureAppConfiguration(options =>
             {
-                options.Connect(Environment.GetEnvironmentVariable("AppConfiguration"))
+                options.Connect(connectionString)
                         // Load all keys that start with `TestApp:` and have no label
                         .Select("TestApp:*")
                         // Configure to reload configuration if the registered sentinel key is modified
